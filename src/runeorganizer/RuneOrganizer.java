@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import runeorganizer.model.Rune;
+import runeorganizer.model.RunePreset;
 
 /**
  *
@@ -31,7 +33,12 @@ public class RuneOrganizer extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+        
+        Rune rune = new Rune();
+        RunePreset preset = new RunePreset(new Rune[]{rune});
+        
+        preset.printAddedStats();
     }
     
 }

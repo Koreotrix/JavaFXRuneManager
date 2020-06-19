@@ -3,13 +3,8 @@ package runeorganizer.model;
 /**
  *
  * @author Tristan
- * @version 0.1 Created RuneStat class
- *      > created RuneStatType enumerator
- *      > added field variables
- *      > added constructors
- *      > added accessors
- *      > added mutators
- *      > override toString() method
+ * @version 0.3 Added gem and grind factors
+ *      > modified RuneStatType to determine if a stat is grind-able
  */
 public class RuneStat {
         
@@ -20,10 +15,26 @@ public class RuneStat {
 
     // Constructors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public RuneStat(RuneStatType type, int value) {
-        this.type = type;
-        this.value = value;
+    public RuneStat() {
+        
+        this(RuneStatType.HPP, 8);
+        
     }
+    
+    public RuneStat(RuneStatType type, int value) {
+        
+        this.type = type;
+        
+        if (type == RuneStatType.CRIRATE || type == RuneStatType.RES 
+                || type == RuneStatType.ACC) {
+            
+            // CRI Rate, Res and Acc all cap at 100     
+            if (value > 100) this.value = 100;
+            
+        } else this.value = value;
+        
+    }
+
 
     // Accessors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -38,28 +49,42 @@ public class RuneStat {
 
     @Override
     public String toString() {
-           return null;
+        
+        String typeString = type.toString();
+        
+        if (typeString.charAt(typeString.length()-1) == '%') {
+            return type.getType().toString() + " +" + value + "%";
+        } return typeString + " +" + value;
+           
     }
     
     
     public enum RuneStatType {
         // P represents percentage stats, F represents flat stats
-        HPP("HP%", Stat.StatType.HP), HPF("HP", Stat.StatType.HP), 
-        ATKP("ATK%", Stat.StatType.ATK), ATKF("ATK", Stat.StatType.ATK), 
-        DEFP("DEF%", Stat.StatType.DEF), DEFF("DEF", Stat.StatType.DEF), 
-        SPD("SPD", Stat.StatType.SPD), 
-        CRIRATE("CRI Rate", Stat.StatType.CRIRATE), CRIDMG("CRI Dmg", Stat.StatType.CRIDMG), 
-        RES("Resistance", Stat.StatType.RES), ACC("Accuracy", Stat.StatType.ACC);
+        HPP("HP%", Stat.StatType.HP, true), HPF("HP", Stat.StatType.HP, true), 
+        ATKP("ATK%", Stat.StatType.ATK, true), ATKF("ATK", Stat.StatType.ATK, true), 
+        DEFP("DEF%", Stat.StatType.DEF, true), DEFF("DEF", Stat.StatType.DEF, true), 
+        SPD("SPD", Stat.StatType.SPD, true), 
+        CRIRATE("CRI Rate%", Stat.StatType.CRIRATE, false), 
+        CRIDMG("CRI Dmg%", Stat.StatType.CRIDMG, false), 
+        RES("Resistance%", Stat.StatType.RES, false), 
+        ACC("Accuracy%", Stat.StatType.ACC, false);
         
         private String name;
         private Stat.StatType type;
+        private boolean isGrindable;
         
-        private RuneStatType(String name, Stat.StatType type) {
+        private RuneStatType(String name, Stat.StatType type, 
+                boolean isGrindable) {
+            
             this.name = name;
             this.type = type;
+            this.isGrindable = isGrindable;
+            
         }
         
         public Stat.StatType getType() { return this.type; }
+        public boolean isGrindable() { return this.isGrindable; }
         
         @Override
         public String toString() { return this.name; }

@@ -36,6 +36,7 @@ public class Stat {
         
         if (type == StatType.CRIRATE || type == StatType.RES 
                 || type == StatType.ACC) {
+            
             // CRI Rate, Res and Acc all cap at 100     
             if (value > 100)  return type + ": " + 100;
             
