@@ -3,10 +3,9 @@ package runeorganizer.model;
 /**
  *
  * @author Tristan
- * @version 0.3 Continued Monster Class
- *      > added Runes field variable, accessors and mutators
- *      > renamed element to attribute
- *      > converted Runes[] to RunePreset
+ * @version 0.4 Continued Monster Class
+ *      > added calculateAddedStats() method
+ *      > added calualateStatsTotal() mehtod
  */
 public class Monster {
     
@@ -21,6 +20,7 @@ public class Monster {
     private RunePreset runes;
     
     // Constructors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
     public Monster() {
         
         this("Lamor", "Low Element", Attribute.FIRE, 1140, 88, 76, 100);
@@ -35,9 +35,9 @@ public class Monster {
         this.attribute = attribute;
         
         this.baseHP = baseHP;
-        this.baseHP = baseATK;
-        this.baseHP = baseDEF;
-        this.baseHP = baseSPD;
+        this.baseATK = baseATK;
+        this.baseDEF = baseDEF;
+        this.baseSPD = baseSPD;
         
         this.baseCRIRate = 15;
         this.baseCRIDmg = 50;
@@ -115,7 +115,47 @@ public class Monster {
     
     // Utilities ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
+    public String calculateAddedStats() {
+        
+        StringBuilder builder = new StringBuilder("");
+        
+        int addedHP = (runes.getAddedHPP() * baseHP) + runes.getAddedHPF();
+        int addedATK = (runes.getAddedATKP() * baseATK) + runes.getAddedATKF();
+        int addedDEF = (runes.getAddedDEFP() * baseATK) + runes.getAddedDEFF();
+        
+        builder.append("HP: +" + addedHP + "\n");
+        builder.append("ATK: +" + addedATK + "\n");
+        builder.append("DEF: +" + addedDEF + "\n");
+        builder.append("SPD: +" + runes.getAddedSPD() + "\n");
+        builder.append("CRI Rate: +" + runes.getAddedCRIRate() + "%\n");
+        builder.append("CRI Dmg: +" + runes.getAddedCRIDmg() + "%\n");
+        builder.append("Resistance: +" + runes.getAddedRes() + "%\n");
+        builder.append("Accuracy: +" + runes.getAddedAcc() + "%\n");
+        
+        return builder.toString();
+    }
     
+    public String calculateStatsTotal() {
+        
+        StringBuilder builder = new StringBuilder("");
+        
+        int HP = (runes.getAddedHPP() * baseHP) + runes.getAddedHPF() + baseHP;
+        int ATK = baseATK + (runes.getAddedATKP() * baseATK) + runes.getAddedATKF();
+        int DEF = baseDEF + (runes.getAddedDEFP() * baseATK) + runes.getAddedDEFF();
+        
+        builder.append("HP: +" + HP + "\n");
+        builder.append("ATK: +" + ATK + "\n");
+        builder.append("DEF: +" + DEF + "\n");
+        builder.append("SPD: +" + (baseSPD + runes.getAddedSPD()) + "\n");
+        builder.append("CRI Rate: +" + (baseCRIRate + runes.getAddedCRIRate()) 
+                + "%\n");
+        builder.append("CRI Dmg: +" + (baseCRIDmg + runes.getAddedCRIDmg()) 
+                + "%\n");
+        builder.append("Resistance: +" + (baseRes + runes.getAddedRes()) + "%\n");
+        builder.append("Accuracy: +" + (baseAcc + runes.getAddedAcc()) + "%\n");
+        
+        return builder.toString();
+    }
     
     
     // Internal Classes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
