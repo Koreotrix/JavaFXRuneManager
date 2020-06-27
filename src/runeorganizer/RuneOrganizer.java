@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import runeorganizer.model.Monster;
 import runeorganizer.model.Rune;
 import runeorganizer.model.RunePreset;
 
@@ -38,7 +39,12 @@ public class RuneOrganizer extends Application {
         Rune rune = new Rune();
         RunePreset preset = new RunePreset(new Rune[]{rune});
         
-        preset.printAddedStats();
+        Monster mon = new Monster();
+        
+        mon.setAllRunes(preset);
+        
+        System.out.println(mon.calculateAddedStats());
+        System.out.println(mon.calculateStatsTotal());
     }
     
 }
